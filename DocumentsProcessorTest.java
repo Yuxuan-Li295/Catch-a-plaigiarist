@@ -23,7 +23,7 @@ public class DocumentsProcessorTest {
     String sequenceFile = "sequenceFile.txt";
 
     @org.junit.Test
-    public void ProcessDocuments() {
+    public void testProcessDocuments() {
         testlist.add("thisis");
         testlist.add("isa");
         testlist.add("atest");
@@ -68,10 +68,11 @@ public class DocumentsProcessorTest {
         s1.setCount(3);
         treeset2.add(s2);
         processor.printSimilarities(treeset2, 1);
-        Similarities arr[] = new Similarities[2];
+        Similarities[] arr = new Similarities[2];
         int i = 0;
-        for (Similarities s : treeset2)
+        for (Similarities s : treeset2) {
             arr[i++] = s;
+        }
         assertEquals(s2, arr[0]);
 
     }
