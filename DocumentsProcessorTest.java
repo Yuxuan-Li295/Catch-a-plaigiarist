@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-public class Test {
+public class DocumentsProcessorTest {
 	DocumentsProcessor processor = new DocumentsProcessor();
 	Map<String, List<String>> testmap = new HashMap<>();
 	List<String> testlist = new ArrayList<>();
