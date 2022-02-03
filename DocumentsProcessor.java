@@ -9,7 +9,6 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
@@ -63,8 +62,8 @@ public class DocumentsProcessor implements IDocumentsProcessor {
             StringBuilder file = new StringBuilder("");
 
             for (Map.Entry<String, List<String>> entry : docs.entrySet()) {
-                for (String ListString : entry.getValue()) {
-                    file.append(ListString + " ");
+                for (String liststring : entry.getValue()) {
+                    file.append(liststring + " ");
                 }
                 int filelength = file.toString().length();
                 tuple = new Tuple<String, Integer>(entry.getKey(), filelength);
