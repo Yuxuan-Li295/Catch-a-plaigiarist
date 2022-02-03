@@ -14,11 +14,11 @@ public class DocumentsProcessorTest {
     TreeSet<Similarities> treeset2 = new TreeSet<>();
     String dir1 = "/autograder/submission/test_files";
     String dir2 = "/autograder/submission/test_files_2";
-    String file1 = "/autograder/submission/file1.txt";
-    String file2 = "/autograder/submission/file2.txt"; 
-    String file3 = "/autograder/submission/file3.txt";
-    String file4 = "/autograder/submission/file4.txt";
-    String file5 = "/autograder/submission/file5.txt";
+    String file1 = "file1.txt";
+    String file2 = "file2.txt"; 
+    String file3 = "file3.txt";
+    String file4 = "file4.txt";
+    String file5 = "file5.txt";
     String nwordFilePath = "nwordFilePath.txt";
     String sequenceFile = "sequenceFile.txt";
 
