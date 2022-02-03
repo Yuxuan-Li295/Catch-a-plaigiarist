@@ -17,7 +17,6 @@ public class DocumentsProcessor implements IDocumentsProcessor {
 
     @Override
     public Map<String, List<String>> processDocuments(String directoryPath, int n) {
-        // TODO Auto-generated method stub
         Map<String, List<String>> processMap = new HashMap<>();
  
         try {
@@ -105,20 +104,16 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         try {
             raf = new RandomAccessFile(nwordFilePath, "r");
             try {
-				// loop through nwordFilePath
                 for (int j = 0; j < fileindex.size(); j++) {
                     int index = fileindex.get(j).getRight();
                     String filename = fileindex.get(j).getLeft();
 
-					// loop through each file
                     for (int i = 0; i < index; i++) {
 
                         current = raf.readByte();
 
-						// end of word
                         if ((char) current == ' ') {
 
-							// same word
                             if (wordmap.containsKey(sb.toString())) {
 								// same word, different file
                                 if (!wordmap.get(sb.toString()).contains(filename)) {
@@ -143,15 +138,12 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                                 }
                                 sb.setLength(0);
                             } else {
-                            	// different word
                                 List<String> filelist = new ArrayList<>();
                                 filelist.add(filename);
                                 wordmap.put(sb.toString(), filelist);
                                 sb.setLength(0);
                             }
                         } else {
-                        	// adding characters
-//							word += (char) current;
                             sb.append((char) current);
                         }
 
@@ -159,12 +151,10 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                 }
 
             } catch (IOException e) {
-				// TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
         } catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -173,7 +163,6 @@ public class DocumentsProcessor implements IDocumentsProcessor {
 
     @Override
     public void printSimilarities(TreeSet<Similarities> sims, int threshold) {
-		// TODO Auto-generated method stub
 
         Comparator<Similarities> comp = new Comparator<Similarities>() {
             @Override
@@ -235,7 +224,6 @@ public class DocumentsProcessor implements IDocumentsProcessor {
             }
             writer2.close();
         } catch (IOException e) {
-			// TODO Auto-generated catch block
             e.printStackTrace();
         }
 
