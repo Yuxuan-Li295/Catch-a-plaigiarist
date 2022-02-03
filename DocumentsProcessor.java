@@ -164,7 +164,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
 
         Comparator<Similarities> comp = new Comparator<Similarities>() {
             @Override
-			public int compare(Similarities o1, Similarities o2) {
+            public int compare(Similarities o1, Similarities o2) {
                 if (o2.getCount() == o1.getCount()) {
                     return o1.compareTo(o2);
                 }
