@@ -206,7 +206,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                 String filename = current.getName();
                 int namelength = filename.length();
                 if (current.isFile() && current.getName()
-                		.substring(namelength - 4).equals(".txt")) {
+                    .substring(namelength - 4).equals(".txt")) {
                     BufferedReader reader5 = new BufferedReader(new FileReader(current), n);
                     DocumentIterator iterator = new DocumentIterator(reader5, n);
                     while (iterator.hasNext()) {
