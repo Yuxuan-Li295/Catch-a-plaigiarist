@@ -20,7 +20,7 @@ public class DocumentsProcessorTest {
 			testlist.add("atest");
 			testlist.add("testdocument");
 			testmap = processor.processDocuments("/autograder/submission/test files", 2);
-			assertEquals(testlist, testmap.get("/autograder/submission/file1.txt"));
+			assertEquals(testlist, testmap.get("/autograder/submission/test files/file1.txt"));
 		}
 	
 	@org.junit.Test
@@ -29,7 +29,7 @@ public class DocumentsProcessorTest {
 		tuplelistTest = processor.storeNWordSequences(testmap, "/autograder/submission/nwordFilePath.txt");
 		int size = 0;
 		for(Tuple<String, Integer> tuple: tuplelistTest) {
-			if(tuple.getLeft().equals("/autograder/submission/file1.txt")) {
+			if(tuple.getLeft().equals("/autograder/submission/test files/file1.txt")) {
 			 size = tuple.getRight();
 			}
 		}
@@ -44,7 +44,7 @@ public class DocumentsProcessorTest {
 		for(Similarities sb : treeset2)
 		{
 			
-			if(sb.getFile1().equals("/autograder/submission/file5.txt")&& sb.getFile2().equals("/autograder/submission/file4.txt")) {
+			if(sb.getFile1().equals("/autograder/submission/test files 2/file5.txt")&& sb.getFile2().equals("/autograder/submission/test files 2/file4.txt")) {
 				assertEquals(3, sb.getCount());
 				
 			}
@@ -52,10 +52,10 @@ public class DocumentsProcessorTest {
 	}
 	@org.junit.Test
 	public void printSimilarities() {
-		Similarities s1 = new Similarities("/autograder/submission/file1.txt", "/autograder/submission/file2.txt");
+		Similarities s1 = new Similarities("/autograder/submission/test files/file1.txt", "/autograder/submission/test files/file2.txt");
 		s1.setCount(1);
 		treeset2.add(s1);
-		Similarities s2 = new Similarities("/autograder/submission/file3.txt", "/autograder/submission/file2.txt");
+		Similarities s2 = new Similarities("/autograder/submission/test files 2/file3.txt", "/autograder/submission/test files/file2.txt");
 		s1.setCount(3);
 		treeset2.add(s2);
 		processor.printSimilarities(treeset2, 1);
@@ -73,7 +73,7 @@ public class DocumentsProcessorTest {
 		tuplelistTest = processor.processAndStore("/autograder/submission/test files", "/autograder/submission/sequenceFile.txt", 4);
 		int size = 0;
 		for(Tuple<String, Integer> tuple: tuplelistTest) {
-			if(tuple.getLeft().equals("/autograder/submission/file1.txt")) {
+			if(tuple.getLeft().equals("/autograder/submission/test files/file1.txt")) {
 			 size = tuple.getRight();
 			}
 		}
