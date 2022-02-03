@@ -53,8 +53,8 @@ public class DocumentsProcessor implements IDocumentsProcessor {
     }
 
     @Override
-    public List<Tuple<String, Integer>> storeNWordSequences
-        (Map<String, List<String>> docs, String nwordFilePath) {
+    public List<Tuple<String, Integer>> storeNWordSequences(
+    Map<String, List<String>> docs, String nwordFilePath) {
         Tuple<String, Integer> tuple;
         List<Tuple<String, Integer>> tuplelist = new ArrayList<>();
         try {
@@ -128,13 +128,15 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                                     for (int z = 0; z < wordmap.get(string).size(); z++) {
 
                                         String prevfile = wordmap.get(sb.toString()).get(z);
-                                        Similarities similarity = new Similarities(prevfile, filename);
+                                        Similarities similarity = 
+                                                new Similarities(prevfile, filename);
                                         if (!treeset.contains(similarity)) {
 
                                             treeset.add(similarity);
                                             similarity.setCount(1);
                                         } else {
-                                            Similarities s = (Similarities) ((TreeSet<Similarities>) treeset)
+                                            Similarities s = 
+                                                (Similarities) ((TreeSet<Similarities>) treeset)
                                                 .ceiling(similarity);
                                             s.setCount((int) s.getCount() + 1);
                                         }
@@ -205,8 +207,8 @@ public class DocumentsProcessor implements IDocumentsProcessor {
     }
 
     @Override
-    public List<Tuple<String, Integer>> processAndStore
-        (String directoryPath, String sequenceFile, int n) {
+    public List<Tuple<String, Integer>> processAndStore(
+    String directoryPath, String sequenceFile, int n) {
         List<Tuple<String, Integer>> tuplelist2 = new ArrayList<>();
         StringBuilder File = new StringBuilder("");
         try {
@@ -218,7 +220,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                 File current = filesinfolder2[i];
                 String filename = current.getName();
                 int namelength = filename.length();
-               if (current.isFile() && current.getName()
+                if (current.isFile() && current.getName()
                 		.substring(namelength - 4).equals(".txt")) {
                     BufferedReader reader5 = new BufferedReader(new FileReader(current), n);
                     DocumentIterator Iterator = new DocumentIterator(reader5, n);
@@ -227,7 +229,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                     }
 
                     reader5.close();
-               }
+                }
                 Tuple<String, Integer> tuple = new Tuple<>(filename, File.toString().length());
                 tuplelist2.add(tuple);
                 writer2.write(File.toString());
