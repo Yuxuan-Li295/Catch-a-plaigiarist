@@ -33,7 +33,7 @@ public class DocumentIterator implements Iterator<String> {
             throw new NoSuchElementException();
         }
         String answer = "";
-		try {
+       try {
             answer = "";
             for (int i = 0; i < n; i++) {
                 while (Character.isLetter(this.c)) {
@@ -69,7 +69,7 @@ public class DocumentIterator implements Iterator<String> {
         int counter = 0;
         while (this.c != -1) {
             while (Character.isLetter(this.c)) {
-				try {
+                try {
                     this.c = this.r.read();
                 } catch (IOException e) {
 					// TODO Auto-generated catch block
