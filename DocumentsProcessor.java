@@ -54,7 +54,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
 
     @Override
     public List<Tuple<String, Integer>> storeNWordSequences(
-    Map<String, List<String>> docs, String nwordFilePath) {
+        Map<String, List<String>> docs, String nwordFilePath) {
         Tuple<String, Integer> tuple;
         List<Tuple<String, Integer>> tuplelist = new ArrayList<>();
         try {
@@ -82,8 +82,8 @@ public class DocumentsProcessor implements IDocumentsProcessor {
     }
 
     @Override
-	public TreeSet<Similarities> computeSimilarities
-	    (String nwordFilePath, List<Tuple<String, Integer>> fileindex) {
+    public TreeSet<Similarities> computeSimilarities(
+	String nwordFilePath, List<Tuple<String, Integer>> fileindex) {
 
         int current = 0;
         RandomAccessFile raf;
@@ -208,7 +208,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
 
     @Override
     public List<Tuple<String, Integer>> processAndStore(
-    String directoryPath, String sequenceFile, int n) {
+        String directoryPath, String sequenceFile, int n) {
         List<Tuple<String, Integer>> tuplelist2 = new ArrayList<>();
         StringBuilder File = new StringBuilder("");
         try {
