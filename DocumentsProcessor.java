@@ -30,10 +30,10 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                 if (filesinfolder[i].isFile() && filesinfolder[i].getName()
                     .substring(filesinfolder[i].getName().length() - 4).equals(".txt")) {
                     BufferedReader reader = new BufferedReader(new FileReader(filesinfolder[i]));
-                    DocumentIterator Iterator = new DocumentIterator(reader, n);
+                    DocumentIterator iterator = new DocumentIterator(reader, n);
 
-                    while (Iterator.hasNext()) {
-                        processList.add(Iterator.next());
+                    while (iterator.hasNext()) {
+                        processList.add(iterator.next());
                     }
                     processMap.put(filesinfolder[i].getName(), processList);
 
@@ -60,17 +60,17 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         try {
             // RAF
             BufferedWriter writer = new BufferedWriter(new FileWriter(nwordFilePath));
-            StringBuilder File = new StringBuilder("");
+            StringBuilder file = new StringBuilder("");
 
             for (Map.Entry<String, List<String>> entry : docs.entrySet()) {
                 for (String ListString : entry.getValue()) {
-                    File.append(ListString + " ");
+                    file.append(ListString + " ");
                 }
-                int filelength = File.toString().length();
+                int filelength = file.toString().length();
                 tuple = new Tuple<String, Integer>(entry.getKey(), filelength);
                 tuplelist.add(tuple);
-                writer.write(File.toString());
-                File.setLength(0);
+                writer.write(file.toString());
+                file.setLength(0);
 
             }
             writer.close();
@@ -83,7 +83,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
 
     @Override
     public TreeSet<Similarities> computeSimilarities(
-	String nwordFilePath, List<Tuple<String, Integer>> fileindex) {
+    String nwordFilePath, List<Tuple<String, Integer>> fileindex) {
 
         int current = 0;
         RandomAccessFile raf;
@@ -210,7 +210,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
     public List<Tuple<String, Integer>> processAndStore(
         String directoryPath, String sequenceFile, int n) {
         List<Tuple<String, Integer>> tuplelist2 = new ArrayList<>();
-        StringBuilder File = new StringBuilder("");
+        StringBuilder file = new StringBuilder("");
         try {
             File folder2 = new File(directoryPath);
             File[] filesinfolder2 = folder2.listFiles();
@@ -223,17 +223,17 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                 if (current.isFile() && current.getName()
                 		.substring(namelength - 4).equals(".txt")) {
                     BufferedReader reader5 = new BufferedReader(new FileReader(current), n);
-                    DocumentIterator Iterator = new DocumentIterator(reader5, n);
-                    while (Iterator.hasNext()) {
-                        File.append(Iterator.next() + " ");
+                    DocumentIterator iterator = new DocumentIterator(reader5, n);
+                    while (iterator.hasNext()) {
+                        file.append(iterator.next() + " ");
                     }
 
                     reader5.close();
                 }
-                Tuple<String, Integer> tuple = new Tuple<>(filename, File.toString().length());
+                Tuple<String, Integer> tuple = new Tuple<>(filename, file.toString().length());
                 tuplelist2.add(tuple);
-                writer2.write(File.toString());
-                File.setLength(0);
+                writer2.write(file.toString());
+                file.setLength(0);
             }
             writer2.close();
         } catch (IOException e) {
