@@ -20,7 +20,7 @@ public class Tuple<L, R> {
 
     /**
      * @return the right
-	 */
+     */
     public R getRight() {
         return right;
     }
