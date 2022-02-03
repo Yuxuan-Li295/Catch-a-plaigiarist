@@ -60,8 +60,14 @@ public class Similarities implements Comparable<Similarities> {
     @Override
     public int compareTo(Similarities o) {
         //TODO
-    	
-    	return this.getCount() - o.getCount();
+		if (this.getFile1() == o.getFile1() && this.getFile2() == o.getFile2()) {
+			return 0;
+		}
+		if (this.getFile1() == o.getFile2() && this.getFile2() == o.getFile1()) {
+			return 0;
+		} else {
+			return -1;
+		}
 	}
 
 }
