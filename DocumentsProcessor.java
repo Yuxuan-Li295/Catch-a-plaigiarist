@@ -82,11 +82,10 @@ public class DocumentsProcessor implements IDocumentsProcessor {
 
     @Override
     public TreeSet<Similarities> computeSimilarities(
-    String nwordFilePath, List<Tuple<String, Integer>> fileindex) {
+        String nwordFilePath, List<Tuple<String, Integer>> fileindex) {
 
         int current = 0;
         RandomAccessFile raf;
-//		String word = "";
         StringBuilder sb = new StringBuilder("");
         Map<String, List<String>> wordmap = new HashMap<>();
         Comparator<Similarities> comp = new Comparator<Similarities>() {
