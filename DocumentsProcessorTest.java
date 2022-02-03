@@ -19,13 +19,13 @@ public class DocumentsProcessorTest {
 			testlist.add("isa");
 			testlist.add("atest");
 			testlist.add("testdocument");
-			testmap = processor.processDocuments("test files", 2);
-			assertEquals(testlist, testmap.get("file1.txt"));
+			testmap = processor.processDocuments("/autograder/submission/test files", 2);
+			assertEquals(testlist, testmap.get("/autograder/submission/file1.txt"));
 		}
 	
 	@org.junit.Test
 	public void teststoreNWordSequences1() {
-		testmap = processor.processDocuments("test files", 4);
+		testmap = processor.processDocuments("/autograder/submission/test files", 4);
 		tuplelistTest = processor.storeNWordSequences(testmap, "/autograder/submission/nwordFilePath.txt");
 		int size = 0;
 		for(Tuple<String, Integer> tuple: tuplelistTest) {
@@ -39,12 +39,12 @@ public class DocumentsProcessorTest {
 	@org.junit.Test
 	public void computeSimilarities() {
 		testmap = processor.processDocuments("test files 2", 3);
-		tuplelistTest = processor.storeNWordSequences(testmap, "nwordFilePath.txt");	
-		treeset2 = processor.computeSimilarities("nwordFilePath.txt",tuplelistTest);
+		tuplelistTest = processor.storeNWordSequences(testmap, "/autograder/submission/nwordFilePath.txt");	
+		treeset2 = processor.computeSimilarities("/autograder/submission/nwordFilePath.txt",tuplelistTest);
 		for(Similarities sb : treeset2)
 		{
 			
-			if(sb.getFile1().equals("file5.txt")&& sb.getFile2().equals("file4.txt")) {
+			if(sb.getFile1().equals("/autograder/submission/file5.txt")&& sb.getFile2().equals("/autograder/submission/file4.txt")) {
 				assertEquals(3, sb.getCount());
 				
 			}
