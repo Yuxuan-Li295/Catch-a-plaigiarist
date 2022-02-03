@@ -1,245 +1,92 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-public class DocumentsProcessor implements IDocumentsProcessor {
+public class DocumentsProcessorTest {
+    DocumentsProcessor processor = new DocumentsProcessor();
+    Map<String, List<String>> testmap = new HashMap<>();
+    List<String> testlist = new ArrayList<>();
+    List<Tuple<String, Integer>> tuplelistTest = new ArrayList<>();
+    TreeSet<Similarities> treeset2 = new TreeSet<>();
+    String dir1 = "/autograder/submission/test_files";
+    String dir2 = "/autograder/submission/test_files_2";
+    String file1 = "/autograder/submission/file1.txt";
+    String file2 = "/autograder/submission/file2.txt"; 
+    String file3 = "/autograder/submission/file3.txt";
+    String file4 = "/autograder/submission/file4.txt";
+    String file5 = "/autograder/submission/file5.txt";
+    String nwordFilePath = "nwordFilePath.txt";
+    String sequenceFile = "sequenceFile.txt";
 
-    @Override
-    public Map<String, List<String>> processDocuments(String directoryPath, int n) {
-        // TODO Auto-generated method stub
-        Map<String, List<String>> processMap = new HashMap<>();
- 
-        try {
-            File folder = new File(directoryPath);
-            File[] filesinfolder = folder.listFiles();
-
-            for (int i = 0; i < filesinfolder.length; i++) {
-                List<String> processList = new ArrayList<>();
-                if (filesinfolder[i].isFile() && filesinfolder[i].getName()
-                    .substring(filesinfolder[i].getName().length() - 4).equals(".txt")) {
-                    BufferedReader reader = new BufferedReader(new FileReader(filesinfolder[i]));
-                    DocumentIterator Iterator = new DocumentIterator(reader, n);
-
-                    while (Iterator.hasNext()) {
-                        processList.add(Iterator.next());
-                    }
-                    processMap.put(filesinfolder[i].getName(), processList);
-
-                    try {
-                        reader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return processMap;
+    @org.junit.Test
+    public void testProcessDocuments() {
+        testlist.add("thisis");
+        testlist.add("isa");
+        testlist.add("atest");
+        testlist.add("testdocument");
+        testmap = processor.processDocuments(dir1, 2);
+        assertEquals(testlist, testmap.get(file1));
     }
 
-    @Override
-    public List<Tuple<String, Integer>> storeNWordSequences
-        (Map<String, List<String>> docs, String nwordFilePath) {
-        Tuple<String, Integer> tuple;
-        List<Tuple<String, Integer>> tuplelist = new ArrayList<>();
-        try {
-            // RAF
-            BufferedWriter writer = new BufferedWriter(new FileWriter(nwordFilePath));
-            StringBuilder File = new StringBuilder("");
-
-            for (Map.Entry<String, List<String>> entry : docs.entrySet()) {
-                for (String ListString : entry.getValue()) {
-                    File.append(ListString + " ");
-                }
-                int filelength = File.toString().length();
-                tuple = new Tuple<String, Integer>(entry.getKey(), filelength);
-                tuplelist.add(tuple);
-                writer.write(File.toString());
-                File.setLength(0);
-
+    @org.junit.Test
+    public void teststoreNWordSequences1() {
+        testmap = processor.processDocuments(dir1, 4);
+        tuplelistTest = processor.storeNWordSequences(testmap, nwordFilePath);
+        int size = 0;
+        for (Tuple<String, Integer> tuple : tuplelistTest) {
+            if (tuple.getLeft().equals(file1)) {
+                size = tuple.getRight();
             }
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-        return tuplelist;
+        assertEquals(28, size);
     }
 
-    @Override
-	public TreeSet<Similarities> computeSimilarities
-	    (String nwordFilePath, List<Tuple<String, Integer>> fileindex) {
+    @org.junit.Test
+    public void computeSimilarities() {
+        testmap = processor.processDocuments(dir2, 3);
+        tuplelistTest = processor.storeNWordSequences(testmap, nwordFilePath);
+        treeset2 = processor.computeSimilarities(nwordFilePath, tuplelistTest);
+        for (Similarities sb : treeset2) {
 
-        int current = 0;
-        RandomAccessFile raf;
-//		String word = "";
-        StringBuilder sb = new StringBuilder("");
-        Map<String, List<String>> wordmap = new HashMap<>();
-        Comparator<Similarities> comp = new Comparator<Similarities>() {
-            @Override
-			public int compare(Similarities o1, Similarities o2) {
-                if (o1.getFile1() == o2.getFile1() && o1.getFile2() == o2.getFile2()) {
-                    return 0;
-                }
-                if (o1.getFile1() == o2.getFile2() && o1.getFile2() == o2.getFile1()) {
-                    return 0;
-                } else {
-                    return -1;
-                }
+            if (sb.getFile1().equals(file5) && sb.getFile2().equals(file4)) {
+                assertEquals(3, sb.getCount());
+
             }
-        };
-        TreeSet<Similarities> treeset = new TreeSet<>(comp);
-        try {
-            raf = new RandomAccessFile(nwordFilePath, "r");
-            try {
-				// loop through nwordFilePath
-                for (int j = 0; j < fileindex.size(); j++) {
-                    int index = fileindex.get(j).getRight();
-                    String filename = fileindex.get(j).getLeft();
-
-					// loop through each file
-                    for (int i = 0; i < index; i++) {
-
-                        current = raf.readByte();
-
-						// end of word
-                        if ((char) current == ' ') {
-
-							// same word
-                            if (wordmap.containsKey(sb.toString())) {
-								// same word, different file
-                                if (!wordmap.get(sb.toString()).contains(filename)) {
-                                    String string = sb.toString();
-                                    for (int z = 0; z < wordmap.get(string).size(); z++) {
-
-                                        String prevfile = wordmap.get(sb.toString()).get(z);
-                                        Similarities similarity = new Similarities(prevfile, filename);
-                                        if (!treeset.contains(similarity)) {
-
-                                            treeset.add(similarity);
-                                            similarity.setCount(1);
-                                        } else {
-                                            Similarities s = (Similarities) ((TreeSet<Similarities>) treeset)
-                                                .ceiling(similarity);
-                                            s.setCount((int) s.getCount() + 1);
-                                        }
-                                    }
-                                    wordmap.get(sb.toString()).add(filename);
-                                }
-                                sb.setLength(0);
-                            } else {
-                            	// different word
-                                List<String> filelist = new ArrayList<>();
-                                filelist.add(filename);
-                                wordmap.put(sb.toString(), filelist);
-                                sb.setLength(0);
-                            }
-                        } else {
-                        	// adding characters
-//							word += (char) current;
-                            sb.append((char) current);
-                        }
-
-                    }
-                }
-
-            } catch (IOException e) {
-				// TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-        } catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-            e.printStackTrace();
         }
-
-        return treeset;
     }
 
-    @Override
-    public void printSimilarities(TreeSet<Similarities> sims, int threshold) {
-		// TODO Auto-generated method stub
-
-        Comparator<Similarities> comp = new Comparator<Similarities>() {
-            @Override
-			public int compare(Similarities o1, Similarities o2) {
-                if (o2.getCount() == o1.getCount()) {
-                    return o1.compareTo(o2);
-                }
-
-                if (o2.getCount() > o1.getCount()) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-        };
-
-        TreeSet<Similarities> finalSet = new TreeSet<>(comp);
-        for (Similarities sb : sims) {
-            finalSet.add(sb);
+    @org.junit.Test
+    public void printSimilarities() {
+        Similarities s1 = new Similarities(file1, file2);
+        s1.setCount(1);
+        treeset2.add(s1);
+        Similarities s2 = new Similarities(file3, file2);
+        s1.setCount(3);
+        treeset2.add(s2);
+        processor.printSimilarities(treeset2, 1);
+        Similarities[] arr = new Similarities[2];
+        int i = 0;
+        for (Similarities s : treeset2) {
+            arr[i++] = s;
         }
-        finalSet.addAll(sims);
-        for (Similarities s : finalSet) {
-            if (s.getCount() > threshold) {
-                System.out.println(s.getFile1() + " " + s.getFile2() + " " + s.getCount());
-
-            }
-        }
+        assertEquals(s2, arr[0]);
 
     }
 
-    @Override
-    public List<Tuple<String, Integer>> processAndStore
-        (String directoryPath, String sequenceFile, int n) {
-        List<Tuple<String, Integer>> tuplelist2 = new ArrayList<>();
-        StringBuilder File = new StringBuilder("");
-        try {
-            File folder2 = new File(directoryPath);
-            File[] filesinfolder2 = folder2.listFiles();
-            BufferedWriter writer2 = new BufferedWriter(new FileWriter(sequenceFile));
-            
-            for (int i = 0; i < filesinfolder2.length; i++) {
-                File current = filesinfolder2[i];
-                String filename = current.getName();
-                int namelength = filename.length();
-               if (current.isFile() && current.getName()
-                		.substring(namelength - 4).equals(".txt")) {
-                    BufferedReader reader5 = new BufferedReader(new FileReader(current), n);
-                    DocumentIterator Iterator = new DocumentIterator(reader5, n);
-                    while (Iterator.hasNext()) {
-                        File.append(Iterator.next() + " ");
-                    }
-
-                    reader5.close();
-               }
-                Tuple<String, Integer> tuple = new Tuple<>(filename, File.toString().length());
-                tuplelist2.add(tuple);
-                writer2.write(File.toString());
-                File.setLength(0);
+    @org.junit.Test
+    public void processAndStore() {
+        tuplelistTest = processor.processAndStore(dir1, sequenceFile, 4);
+        int size = 0;
+        for (Tuple<String, Integer> tuple : tuplelistTest) {
+            if (tuple.getLeft().equals(file1)) {
+                size = tuple.getRight();
             }
-            writer2.close();
-        } catch (IOException e) {
-			// TODO Auto-generated catch block
-            e.printStackTrace();
         }
-
-        return tuplelist2;
-
+        assertEquals(28, size);
     }
 
 }
