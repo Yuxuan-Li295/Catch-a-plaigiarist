@@ -11,7 +11,7 @@ public interface IDocumentsProcessor {
      * @param n    - the size of the sequence of words
      * @return collection of files with sequences of words
      */
-        Map<String, List<String>> processDocuments(String directoryPath, int n);
+    Map<String, List<String>> processDocuments(String directoryPath, int n);
 
 
     /**
@@ -23,9 +23,9 @@ public interface IDocumentsProcessor {
      * @return a list of file and size (in byte) of character written in file
      *         path
      */
-        List<Tuple<String, Integer>> storeNWordSequences(
-        Map<String, List<String>> docs,
-        String nwordFilePath);
+    List<Tuple<String, Integer>> storeNWordSequences(
+            Map<String, List<String>> docs,
+            String nwordFilePath);
 
 
     /**
