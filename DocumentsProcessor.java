@@ -17,7 +17,7 @@ import java.util.TreeSet;
 public class DocumentsProcessor implements IDocumentsProcessor {
 
     @Override
-	public Map<String, List<String>> processDocuments(String directoryPath, int n) {
+    public Map<String, List<String>> processDocuments(String directoryPath, int n) {
 		// TODO Auto-generated method stub
         Map<String, List<String>> processMap = new HashMap<>();
  
@@ -28,7 +28,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
             for (int i = 0; i < filesinfolder.length; i++) {
                 List<String> processList = new ArrayList<>();
                 if (filesinfolder[i].isFile() && filesinfolder[i].getName()
-.substring(filesinfolder[i].getName().length() - 4).equals(".txt")) {
+                    .substring(filesinfolder[i].getName().length() - 4).equals(".txt")) {
                     BufferedReader reader = new BufferedReader(new FileReader(filesinfolder[i]));
                     DocumentIterator Iterator = new DocumentIterator(reader, n);
 
@@ -50,10 +50,10 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         }
 
         return processMap;
-	}
+    }
 
-	@Override
-	public List<Tuple<String, Integer>> storeNWordSequences(Map<String, List<String>> docs, String nwordFilePath) {
+    @Override
+    public List<Tuple<String, Integer>> storeNWordSequences(Map<String, List<String>> docs, String nwordFilePath) {
         Tuple<String, Integer> tuple;
         List<Tuple<String, Integer>> tuplelist = new ArrayList<>();
         try {
@@ -66,7 +66,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                     File.append(ListString + " ");
             }
                 int filelength = File.toString().length();
-				tuple = new Tuple<String, Integer>(entry.getKey(), filelength);
+                tuple = new Tuple<String, Integer>(entry.getKey(), filelength);
                 tuplelist.add(tuple);
                 writer.write(File.toString());
                 File.setLength(0);
@@ -80,7 +80,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         return tuplelist;
     }
 
-	@Override
+    @Override
 	public TreeSet<Similarities> computeSimilarities(String nwordFilePath, List<Tuple<String, Integer>> fileindex) {
 
         int current = 0;
@@ -89,18 +89,18 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         StringBuilder sb = new StringBuilder("");
         Map<String, List<String>> wordmap = new HashMap<>();
         Comparator<Similarities> comp = new Comparator<Similarities>() {
-			@Override
+            @Override
 			public int compare(Similarities o1, Similarities o2) {
-                        if (o1.getFile1() == o2.getFile1() && o1.getFile2() == o2.getFile2()) {
-                            return 0;
-                        }
-                        if (o1.getFile1() == o2.getFile2() && o1.getFile2() == o2.getFile1()) {
-                            return 0;
-                        } else {
-                            return -1;
-                        }
-			}
-		};
+                if (o1.getFile1() == o2.getFile1() && o1.getFile2() == o2.getFile2()) {
+                    return 0;
+                }
+                if (o1.getFile1() == o2.getFile2() && o1.getFile2() == o2.getFile1()) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+        };
         TreeSet<Similarities> treeset = new TreeSet<>(comp);
         try {
             raf = new RandomAccessFile(nwordFilePath, "r");
@@ -111,9 +111,9 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                     String filename = fileindex.get(j).getLeft();
 
 					// loop through each file
-                for (int i = 0; i < index; i++) {
+                    for (int i = 0; i < index; i++) {
 
-                    current = raf.readByte();
+                        current = raf.readByte();
 
 						// end of word
                         if ((char) current == ' ') {
@@ -125,32 +125,29 @@ public class DocumentsProcessor implements IDocumentsProcessor {
 
                                     for (int z = 0; z < wordmap.get(sb.toString()).size(); z++) {
 
-										String prevfile = wordmap.get(sb.toString()).get(z);
+                                        String prevfile = wordmap.get(sb.toString()).get(z);
                                         Similarities similarity = new Similarities(prevfile, filename);
-										if (!treeset.contains(similarity)) {
+                                        if (!treeset.contains(similarity)) {
 
                                             treeset.add(similarity);
                                             similarity.setCount(1);
                                         } else {
-	                                        Similarities s = (Similarities) ((TreeSet<Similarities>) treeset).ceiling(similarity);
-                                        s.setCount((int) s.getCount() + 1);
+                                            Similarities s = (Similarities) ((TreeSet<Similarities>) treeset).ceiling(similarity);
+                                            s.setCount((int) s.getCount() + 1);
                                         }
                                     }
                                     wordmap.get(sb.toString()).add(filename);
                                 }
                                 sb.setLength(0);
-                            }
-
-							// different word
-                            else {
+                            } else {
+                            	// different word
                                 List<String> filelist = new ArrayList<>();
                                 filelist.add(filename);
                                 wordmap.put(sb.toString(), filelist);
                                 sb.setLength(0);
                             }
-                        }
-						// adding characters
-                        else {
+                        } else {
+                        	// adding characters
 //							word += (char) current;
                             sb.append((char) current);
                         }
@@ -158,16 +155,12 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                     }
                 }
 
-            }
-
-            catch (IOException e) {
+            } catch (IOException e) {
 				// TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
-        }
-
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
             e.printStackTrace();
         }
