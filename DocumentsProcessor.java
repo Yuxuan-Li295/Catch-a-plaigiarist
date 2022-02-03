@@ -18,7 +18,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
 
     @Override
     public Map<String, List<String>> processDocuments(String directoryPath, int n) {
-		// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
         Map<String, List<String>> processMap = new HashMap<>();
  
         try {
@@ -64,7 +64,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
             for (Map.Entry<String, List<String>> entry : docs.entrySet()) {
                 for (String ListString : entry.getValue()) {
                     File.append(ListString + " ");
-            }
+                }
                 int filelength = File.toString().length();
                 tuple = new Tuple<String, Integer>(entry.getKey(), filelength);
                 tuplelist.add(tuple);
@@ -166,76 +166,74 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         }
 
         return treeset;
-     }
+    }
 
-	@Override
-     public void printSimilarities(TreeSet<Similarities> sims, int threshold) {
+    @Override
+    public void printSimilarities(TreeSet<Similarities> sims, int threshold) {
 		// TODO Auto-generated method stub
 
-		Comparator<Similarities> comp = new Comparator<Similarities>() {
+        Comparator<Similarities> comp = new Comparator<Similarities>() {
 			@Override
 			public int compare(Similarities o1, Similarities o2) {
-				if (o2.getCount() == o1.getCount()) {
-					return o1.compareTo(o2);
-				}
+                        if (o2.getCount() == o1.getCount()) {
+                           return o1.compareTo(o2);
+                        }
 
-				if (o2.getCount() > o1.getCount()) {
-					return 1;
-				} else {
-					return -1;
-				}
+                        if (o2.getCount() > o1.getCount()) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
 			}
 		};
 
-		TreeSet<Similarities> finalSet = new TreeSet<>(comp);
-		for (Similarities sb : sims) {
-			finalSet.add(sb);
-		}
-		finalSet.addAll(sims);
-		for (Similarities s : finalSet) {
-			if (s.getCount() > threshold) {
-				System.out.println("Method 4: " + s.getFile1() + " " + s.getFile2() + " " + s.getCount());
+        TreeSet<Similarities> finalSet = new TreeSet<>(comp);
+        for (Similarities sb : sims) {
+            finalSet.add(sb);
+        }
+        finalSet.addAll(sims);
+        for (Similarities s : finalSet) {
+            if (s.getCount() > threshold) {
+                System.out.println("Method 4: " + s.getFile1() + " " + s.getFile2() + " " + s.getCount());
 
-			}
-		}
+            }
+        }
 
-	}
+    }
 
-	@Override
-	public List<Tuple<String, Integer>> processAndStore(String directoryPath, String sequenceFile, int n) {
-		List<Tuple<String, Integer>> tuplelist2 = new ArrayList<>();
-		StringBuilder File = new StringBuilder("");
-		try {
-			File folder2 = new File(directoryPath);
-			File[] filesinfolder2 = folder2.listFiles();
-			BufferedWriter writer2 = new BufferedWriter(new FileWriter(sequenceFile));
+    @Override
+    public List<Tuple<String, Integer>> processAndStore(String directoryPath, String sequenceFile, int n) {
+        List<Tuple<String, Integer>> tuplelist2 = new ArrayList<>();
+        StringBuilder File = new StringBuilder("");
+        try {
+            File folder2 = new File(directoryPath);
+            File[] filesinfolder2 = folder2.listFiles();
+            BufferedWriter writer2 = new BufferedWriter(new FileWriter(sequenceFile));
 
-			for (int i = 0; i < filesinfolder2.length; i++) {
-				if (filesinfolder2[i].isFile() && filesinfolder2[i].getName()
-						.substring(filesinfolder2[i].getName().length() - 4).equals(".txt")) {
-					BufferedReader reader5 = new BufferedReader(new FileReader(filesinfolder2[i]), n);
-					DocumentIterator Iterator = new DocumentIterator(reader5, n);
-					while (Iterator.hasNext()) {
-						File.append(Iterator.next() + " ");
-					}
+            for (int i = 0; i < filesinfolder2.length; i++) {
+                if (filesinfolder2[i].isFile() && filesinfolder2[i].getName()
+                		.substring(filesinfolder2[i].getName().length() - 4).equals(".txt")) {
+                    BufferedReader reader5 = new BufferedReader(new FileReader(filesinfolder2[i]), n);
+                    DocumentIterator Iterator = new DocumentIterator(reader5, n);
+                    while (Iterator.hasNext()) {
+                        File.append(Iterator.next() + " ");
+                    }
 
-					reader5.close();
-				}
-				Tuple<String, Integer> tuple = new Tuple<>(filesinfolder2[i].getName(), File.toString().length());
-				tuplelist2.add(tuple);
-				writer2.write(File.toString());
-				File.setLength(0);
-			}
-			writer2.close();
-		}
-
-		catch (IOException e) {
+                    reader5.close();
+                }
+                Tuple<String, Integer> tuple = new Tuple<>(filesinfolder2[i].getName(), File.toString().length());
+                tuplelist2.add(tuple);
+                writer2.write(File.toString());
+                File.setLength(0);
+            }
+            writer2.close();
+        }catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return tuplelist2;
+        return tuplelist2;
 
-	}
+    }
 
 }
