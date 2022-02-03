@@ -90,11 +90,11 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         Map<String, List<String>> wordmap = new HashMap<>();
         Comparator<Similarities> comp = new Comparator<Similarities>() {
             @Override
-			public int compare(Similarities o1, Similarities o2) {
-                if (o1.getFile1() == o2.getFile1() && o1.getFile2() == o2.getFile2()) {
+            public int compare(Similarities o1, Similarities o2) {
+                if (o1.getFile1().equals(o2.getFile1()) && o1.getFile2().equals(o2.getFile2())) {
                     return 0;
                 }
-                if (o1.getFile1() == o2.getFile2() && o1.getFile2() == o2.getFile1()) {
+                if (o1.getFile1().equals(o2.getFile2()) && o1.getFile2().equals(o2.getFile1())) {
                     return 0;
                 } else {
                     return -1;
