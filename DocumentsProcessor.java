@@ -56,7 +56,6 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         Tuple<String, Integer> tuple;
         List<Tuple<String, Integer>> tuplelist = new ArrayList<>();
         try {
-            // RAF
             BufferedWriter writer = new BufferedWriter(new FileWriter(nwordFilePath));
             StringBuilder file = new StringBuilder("");
 
@@ -115,7 +114,6 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                         if ((char) current == ' ') {
 
                             if (wordmap.containsKey(sb.toString())) {
-								// same word, different file
                                 if (!wordmap.get(sb.toString()).contains(filename)) {
                                     String string = sb.toString();
                                     for (int z = 0; z < wordmap.get(string).size(); z++) {
