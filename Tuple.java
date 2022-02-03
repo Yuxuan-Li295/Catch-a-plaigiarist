@@ -5,7 +5,7 @@
  * @param <L> the left value
  * @param <R> the right value
  */
-    public class Tuple<L, R> {
+public class Tuple<L, R> {
     private L left;
     private R right;
 
@@ -18,7 +18,7 @@
         this.setRight(r);
     }
 
-	/**
+    /**
 	 * @return the right
 	 */
     public R getRight() {
