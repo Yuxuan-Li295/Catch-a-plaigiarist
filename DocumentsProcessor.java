@@ -9,7 +9,6 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
@@ -53,11 +52,12 @@ public class DocumentsProcessor implements IDocumentsProcessor {
     }
 
     @Override
-    public List<Tuple<String, Integer>> storeNWordSequences(Map<String, List<String>> docs, String nwordFilePath) {
+    public List<Tuple<String, Integer>> storeNWordSequences
+        (Map<String, List<String>> docs, String nwordFilePath) {
         Tuple<String, Integer> tuple;
         List<Tuple<String, Integer>> tuplelist = new ArrayList<>();
         try {
-			// RAF
+            // RAF
             BufferedWriter writer = new BufferedWriter(new FileWriter(nwordFilePath));
             StringBuilder File = new StringBuilder("");
 
@@ -81,7 +81,8 @@ public class DocumentsProcessor implements IDocumentsProcessor {
     }
 
     @Override
-	public TreeSet<Similarities> computeSimilarities(String nwordFilePath, List<Tuple<String, Integer>> fileindex) {
+	public TreeSet<Similarities> computeSimilarities
+	    (String nwordFilePath, List<Tuple<String, Integer>> fileindex) {
 
         int current = 0;
         RandomAccessFile raf;
@@ -122,8 +123,8 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                             if (wordmap.containsKey(sb.toString())) {
 								// same word, different file
                                 if (!wordmap.get(sb.toString()).contains(filename)) {
-
-                                    for (int z = 0; z < wordmap.get(sb.toString()).size(); z++) {
+                                    String string = sb.toString();
+                                    for (int z = 0; z < wordmap.get(string).size(); z++) {
 
                                         String prevfile = wordmap.get(sb.toString()).get(z);
                                         Similarities similarity = new Similarities(prevfile, filename);
@@ -132,7 +133,8 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                                             treeset.add(similarity);
                                             similarity.setCount(1);
                                         } else {
-                                            Similarities s = (Similarities) ((TreeSet<Similarities>) treeset).ceiling(similarity);
+                                            Similarities s = (Similarities) ((TreeSet<Similarities>) treeset)
+                                                .ceiling(similarity);
                                             s.setCount((int) s.getCount() + 1);
                                         }
                                     }
@@ -194,7 +196,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         finalSet.addAll(sims);
         for (Similarities s : finalSet) {
             if (s.getCount() > threshold) {
-                System.out.println( s.getFile1() + " " + s.getFile2() + " " + s.getCount());
+                System.out.println(s.getFile1() + " " + s.getFile2() + " " + s.getCount());
 
             }
         }
@@ -202,26 +204,30 @@ public class DocumentsProcessor implements IDocumentsProcessor {
     }
 
     @Override
-    public List<Tuple<String, Integer>> processAndStore(String directoryPath, String sequenceFile, int n) {
+    public List<Tuple<String, Integer>> processAndStore
+        (String directoryPath, String sequenceFile, int n) {
         List<Tuple<String, Integer>> tuplelist2 = new ArrayList<>();
         StringBuilder File = new StringBuilder("");
         try {
             File folder2 = new File(directoryPath);
             File[] filesinfolder2 = folder2.listFiles();
             BufferedWriter writer2 = new BufferedWriter(new FileWriter(sequenceFile));
-
+            
             for (int i = 0; i < filesinfolder2.length; i++) {
-                if (filesinfolder2[i].isFile() && filesinfolder2[i].getName()
-                		.substring(filesinfolder2[i].getName().length() - 4).equals(".txt")) {
-                    BufferedReader reader5 = new BufferedReader(new FileReader(filesinfolder2[i]), n);
+                File current = filesinfolder2[i];
+                String filename = current.getName();
+                int namelength = filename.length();
+               if (current.isFile() && current.getName()
+                		.substring(namelength - 4).equals(".txt")) {
+                    BufferedReader reader5 = new BufferedReader(new FileReader(current), n);
                     DocumentIterator Iterator = new DocumentIterator(reader5, n);
                     while (Iterator.hasNext()) {
                         File.append(Iterator.next() + " ");
                     }
 
                     reader5.close();
-                }
-                Tuple<String, Integer> tuple = new Tuple<>(filesinfolder2[i].getName(), File.toString().length());
+               }
+                Tuple<String, Integer> tuple = new Tuple<>(filename, File.toString().length());
                 tuplelist2.add(tuple);
                 writer2.write(File.toString());
                 File.setLength(0);
