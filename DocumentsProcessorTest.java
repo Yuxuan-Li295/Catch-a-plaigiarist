@@ -18,8 +18,8 @@ public class DocumentsProcessorTest {
 	String file3 = "/autograder/submission/file3.txt";
 	String file4 = "/autograder/submission/file4.txt";
 	String file5 = "/autograder/submission/file5.txt";
-	String nwordFilePath = "/autograder/submission/nwordFilePath.txt";
-	String sequenceFile = "/autograder/submission/sequenceFile.txt";
+	String nwordFilePath = "nwordFilePath.txt";
+	String sequenceFile = "sequenceFile.txt";
 	@org.junit.Test
 	public void ProcessDocuments() {
 		testlist.add("thisis");
