@@ -51,7 +51,7 @@ public class DocumentsProcessorTest {
 		}
 	}
 	@org.junit.Test
-	void printSimilarities() {
+	public void printSimilarities() {
 		Similarities s1 = new Similarities("/autograder/submission/file1.txt", "/autograder/submission/file2.txt");
 		s1.setCount(1);
 		treeset2.add(s1);
@@ -69,7 +69,7 @@ public class DocumentsProcessorTest {
     
 	}
 	@org.junit.Test
-	void processAndStore() {
+	public void processAndStore() {
 		tuplelistTest = processor.processAndStore("/autograder/submission/test files", "/autograder/submission/sequenceFile.txt", 4);
 		int size = 0;
 		for(Tuple<String, Integer> tuple: tuplelistTest) {
