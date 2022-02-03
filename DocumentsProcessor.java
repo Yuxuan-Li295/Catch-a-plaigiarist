@@ -173,19 +173,19 @@ public class DocumentsProcessor implements IDocumentsProcessor {
 		// TODO Auto-generated method stub
 
         Comparator<Similarities> comp = new Comparator<Similarities>() {
-			@Override
+            @Override
 			public int compare(Similarities o1, Similarities o2) {
-                        if (o2.getCount() == o1.getCount()) {
-                           return o1.compareTo(o2);
-                        }
+                if (o2.getCount() == o1.getCount()) {
+                    return o1.compareTo(o2);
+                }
 
-                        if (o2.getCount() > o1.getCount()) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-			}
-		};
+                if (o2.getCount() > o1.getCount()) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        };
 
         TreeSet<Similarities> finalSet = new TreeSet<>(comp);
         for (Similarities sb : sims) {
@@ -194,7 +194,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         finalSet.addAll(sims);
         for (Similarities s : finalSet) {
             if (s.getCount() > threshold) {
-                System.out.println("Method 4: " + s.getFile1() + " " + s.getFile2() + " " + s.getCount());
+                System.out.println( s.getFile1() + " " + s.getFile2() + " " + s.getCount());
 
             }
         }
@@ -227,10 +227,10 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                 File.setLength(0);
             }
             writer2.close();
-        }catch (IOException e) {
+        } catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            e.printStackTrace();
+        }
 
         return tuplelist2;
 
