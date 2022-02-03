@@ -1,5 +1,5 @@
-//import java.util.ArrayList;
-//import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author ericfouh
@@ -60,10 +60,10 @@ public class Similarities implements Comparable<Similarities> {
     @Override
     public int compareTo(Similarities o) {
         //TODO
-        if (this.getFile1() == o.getFile1() && this.getFile2() == o.getFile2()) {
+        if (this.getFile1().equals(o.getFile1()) && this.getFile2().equals(o.getFile2())) {
             return 0;
         }
-        if (this.getFile1() == o.getFile2() && this.getFile2() == o.getFile1()) {
+        if (this.getFile1().equals(o.getFile2()) && this.getFile2().equals(o.getFile1()) ){
             return 0;
         } else {
             return -1;
