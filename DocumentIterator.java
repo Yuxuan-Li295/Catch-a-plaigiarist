@@ -26,76 +26,48 @@ public class DocumentIterator implements Iterator<String> {
         }
     }
 
+
+    
     @Override
-    public String next() {
+	public boolean hasNext() {
+		return (c != -1);
+	}
 
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
-        String answer = "";
-        try {
-            answer = "";
-            for (int i = 0; i < n; i++) {
-                while (Character.isLetter(this.c)) {
-                    if (Character.isUpperCase((char) this.c)) {
-                        this.c = Character.toLowerCase((char) this.c);
-                    }
-                    answer += (char) this.c;
-                    this.c = this.r.read();
-                }
-                if (i == 0) {
-                    this.r.mark(100);
-                }
-                skipNonLetters();
-            }
-            this.r.reset();
-            this.c = this.r.read();
+	@Override
+	public String next() {
+		int numWords = 0;
 
-        } catch (IOException e) {
-            throw new NoSuchElementException();
-        }
+		if (!hasNext()) {
+			throw new NoSuchElementException();
+		}
+		java.lang.String answer = "";
+		java.lang.String tmpans = "";
+		try {
+			while (numWords < this.n && hasNext()) {
+				tmpans = answer;
+				while (Character.isLetter(this.c)) {
+					answer = answer + (char) this.c;
+					this.c = this.r.read();
+				}
 
-        return answer;
+				if (numWords == 0) {
+					this.r.mark(1000);
+				}
+				if (!tmpans.equals(answer))
+					numWords++;
+				skipNonLetters();
+			}
+			this.r.reset();
+			this.c = this.r.read();
+		} catch (IOException e) {
+			throw new NoSuchElementException();
+		}
 
-    }
+		if (numWords < this.n) {
+			answer = "";
+			this.c = -1;
+		}
 
-    @Override
-    public boolean hasNext() {
-        int temp = this.c;
-        try {
-            this.r.mark(100);
-        } catch (Exception e) {
-        }
-        int counter = 0;
-        while (this.c != -1) {
-            while (Character.isLetter(this.c)) {
-                try {
-                    this.c = this.r.read();
-                } catch (IOException e) {
-                // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            skipNonLetters();
-            counter++;
-
-            if (counter == this.n) {
-                try {
-                    this.r.reset();
-                    this.c = temp;
-                    return true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
-        try {
-            this.r.reset();
-            this.c = temp;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+		return (String) answer;
+	}
 }
