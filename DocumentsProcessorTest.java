@@ -42,7 +42,7 @@ public class DocumentsProcessorTest {
                 size = tuple.getRight();
             }
         }
-        assertEquals(29, size);
+        assertEquals(28, size);
     }
 
     @org.junit.Test
@@ -53,7 +53,7 @@ public class DocumentsProcessorTest {
         for (Similarities sb : treeset2) {
 
             if (sb.getFile1().equals(file5) && sb.getFile2().equals(file4)) {
-                assertEquals(2, sb.getCount());
+                assertEquals(3, sb.getCount());
 
             }
         }
@@ -86,7 +86,7 @@ public class DocumentsProcessorTest {
                 size = tuple.getRight();
             }
         }
-        assertEquals(28, size);
+        assertEquals(29, size);
     }
 
 }
