@@ -131,9 +131,10 @@ public class DocumentIterator implements Iterator<String> {
                 if (numWords == 0) {
                     this.r.mark(1000);
                 }
-                if (!tmpans.equals(answer))
+                if (!tmpans.equals(answer)){
                     numWords++;
-                    skipNonLetters();
+                }
+            skipNonLetters();
             }
             this.r.reset();
             this.c = this.r.read();
@@ -147,5 +148,5 @@ public class DocumentIterator implements Iterator<String> {
         }
 
         return (String) answer;
-        }
+    }
 }
