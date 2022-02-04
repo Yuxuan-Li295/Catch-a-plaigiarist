@@ -33,6 +33,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
                     while (iterator.hasNext()) {
                         processList.add(iterator.next());
                     }
+                    processList.remove(processList.size() - 1);
                     processMap.put(filesinfolder[i].getName(), processList);
 
                     try {
@@ -57,18 +58,13 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         List<Tuple<String, Integer>> tuplelist = new ArrayList<>();
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(nwordFilePath));
-            StringBuilder file = new StringBuilder("");
+            for (String key : docs.keySet()) {
+                String nWordSquence = String.join(" ", docs.get(key)) + " ";
 
-            for (Map.Entry<String, List<String>> entry : docs.entrySet()) {
-                for (String liststring : entry.getValue()) {
-                    file.append(liststring + " ");
-                }
-                int filelength = file.toString().length();
-                tuple = new Tuple<String, Integer>(entry.getKey(), filelength);
+                int bytelength = nWordSquence.getBytes().length;
+                tuple = new Tuple<String, Integer>(key, bytelength);
                 tuplelist.add(tuple);
-                writer.write(file.toString());
-                file.setLength(0);
-
+                writer.write(nWordSquence);
             }
             writer.close();
         } catch (IOException e) {
@@ -81,7 +77,6 @@ public class DocumentsProcessor implements IDocumentsProcessor {
     @Override
     public TreeSet<Similarities> computeSimilarities(
         String nwordFilePath, List<Tuple<String, Integer>> fileindex) {
-
         int current = 0;
         RandomAccessFile raf;
         StringBuilder sb = new StringBuilder("");
@@ -89,7 +84,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         Comparator<Similarities> comp = new Comparator<Similarities>() {
             @Override
             public int compare(Similarities o1, Similarities o2) {
-                if (o1.getFile1().equals(o2.getFile1()) && o1.getFile2().equals(o2.getFile2())) {
+            	if (o1.getFile1().equals(o2.getFile1()) && o1.getFile2().equals(o2.getFile2())) {
                     return 0;
                 }
                 if (o1.getFile1().equals(o2.getFile2()) && o1.getFile2().equals(o2.getFile1())) {
@@ -165,22 +160,16 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         Comparator<Similarities> comp = new Comparator<Similarities>() {
             @Override
             public int compare(Similarities o1, Similarities o2) {
-                if (o2.getCount() == o1.getCount()) {
-                    return o1.compareTo(o2);
-                }
+            	 if (o1.getCount() == o2.getCount()) {
+                     return o1.getFile1().compareTo(o2.getFile1());
+                 } else {
+                     return o2.getCount() - o1.getCount();
+                 }
 
-                if (o2.getCount() > o1.getCount()) {
-                    return 1;
-                } else {
-                    return -1;
-                }
             }
         };
 
         TreeSet<Similarities> finalSet = new TreeSet<>(comp);
-        for (Similarities sb : sims) {
-            finalSet.add(sb);
-        }
         finalSet.addAll(sims);
         for (Similarities s : finalSet) {
             if (s.getCount() > threshold) {
