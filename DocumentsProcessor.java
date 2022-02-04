@@ -84,7 +84,7 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         Comparator<Similarities> comp = new Comparator<Similarities>() {
             @Override
             public int compare(Similarities o1, Similarities o2) {
-            	if (o1.getFile1().equals(o2.getFile1()) && o1.getFile2().equals(o2.getFile2())) {
+                if (o1.getFile1().equals(o2.getFile1()) && o1.getFile2().equals(o2.getFile2())) {
                     return 0;
                 }
                 if (o1.getFile1().equals(o2.getFile2()) && o1.getFile2().equals(o2.getFile1())) {
@@ -160,11 +160,11 @@ public class DocumentsProcessor implements IDocumentsProcessor {
         Comparator<Similarities> comp = new Comparator<Similarities>() {
             @Override
             public int compare(Similarities o1, Similarities o2) {
-            	 if (o1.getCount() == o2.getCount()) {
-                     return o1.getFile1().compareTo(o2.getFile1());
-                 } else {
-                     return o2.getCount() - o1.getCount();
-                 }
+                if (o1.getCount() == o2.getCount()) {
+                    return o1.getFile1().compareTo(o2.getFile1());
+                } else {
+                    return o2.getCount() - o1.getCount();
+                }
 
             }
         };
