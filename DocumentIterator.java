@@ -104,48 +104,48 @@ public class DocumentIterator implements Iterator<String> {
     
     
     @Override
-	public boolean hasNext() {
-		return (c != -1);
-	}
+    public boolean hasNext() {
+        return (c != -1);
+    }
 
-	@Override
-	public String next() {
-		int numWords = 0;
+    @Override
+    public String next() {
+        int numWords = 0;
 
-		if (!hasNext()) {
-			throw new NoSuchElementException();
-		}
-		java.lang.String answer = "";
-		java.lang.String tmpans = "";
-		try {
-			while (numWords < this.n && hasNext()) {
-				tmpans = answer;
-				while (Character.isLetter(this.c)) {
-                  if (Character.isUpperCase((char) this.c)) {
-                      this.c = Character.toLowerCase((char) this.c);
-                  }
-                 answer = answer + (char) this.c;
-					this.c = this.r.read();
-				}
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        java.lang.String answer = "";
+        java.lang.String tmpans = "";
+        try {
+            while (numWords < this.n && hasNext()) {
+                tmpans = answer;
+                while (Character.isLetter(this.c)) {
+                    if (Character.isUpperCase((char) this.c)) {
+                        this.c = Character.toLowerCase((char) this.c);
+                    }
+                    answer = answer + (char) this.c;
+                    this.c = this.r.read();
+                }
 
-				if (numWords == 0) {
-					this.r.mark(1000);
-				}
-				if (!tmpans.equals(answer))
-					numWords++;
-				skipNonLetters();
-			}
-			this.r.reset();
-			this.c = this.r.read();
-		} catch (IOException e) {
-			throw new NoSuchElementException();
-		}
+                if (numWords == 0) {
+                    this.r.mark(1000);
+                }
+                if (!tmpans.equals(answer))
+                    numWords++;
+                    skipNonLetters();
+            }
+            this.r.reset();
+            this.c = this.r.read();
+        } catch (IOException e) {
+            throw new NoSuchElementException();
+        }
 
-		if (numWords < this.n) {
-			answer = "";
-			this.c = -1;
-		}
+        if (numWords < this.n) {
+            answer = "";
+            this.c = -1;
+        }
 
-		return (String) answer;
-	}
+        return (String) answer;
+        }
 }
